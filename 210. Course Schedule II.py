@@ -20,11 +20,13 @@ class Solution(object):
 
         while len(q) > 0:
             x = q.pop()
+            ret.append(x)
             for y in s_in[x]:
                 s_out[y] -= 1
                 if s_out[y] == 0:
                     q.append(y)
 
+        #print(ret)
         if len(ret) != n:
             return []
         return ret
