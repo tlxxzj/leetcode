@@ -1,36 +1,28 @@
-# Definition for an interval.
-# class Interval(object):
-#     def __init__(self, s=0, e=0):
-#         self.start = s
-#         self.end = e
-
-class Solution(object):
-    def merge(self, intervals):
-        """
-        :type intervals: List[Interval]
-        :rtype: List[Interval]
-        """
-        if len(intervals) < 2:
-            return intervals
-
-        def cmp(a, b):
-            if a.start == b.start:
-                return a.end-b.end
-            return a.start-b.start
-        
-        def isoverlap(a, b):
-            return a.end >= b.start
-        
-        intervals.sort(cmp=cmp)
-        ret=[intervals[0]]
-        k=0
-        #return intervals
-    
-        for i in intervals[1:]:
-            if isoverlap(ret[k], i):
-                ret[k].end = max(i.end, ret[k].end)
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        from functools import cmp_to_key
+        def interval_cmp(a, b):
+            if a[0] < b[0]:
+                return -1
+            elif a[0] == b[0]:
+                if a[1] < b[1]:
+                    return -1
+                elif a[1] == b[1]:
+                    return 0
+                else:
+                    return 1
             else:
-                k += 1
-                ret.append(i)
-            
-        return ret
+                return 1
+        
+        intervals.sort(key=cmp_to_key(interval_cmp))
+        merged_intervals = []
+        last_interval = intervals[0]
+        for interval in intervals[1:]:
+            if interval[0] <= last_interval[1]:
+                last_interval = [last_interval[0], max(last_interval[1], interval[1])]
+                continue
+            else:
+                merged_intervals.append(last_interval)
+                last_interval = interval
+        merged_intervals.append(last_interval)
+        return merged_intervals
