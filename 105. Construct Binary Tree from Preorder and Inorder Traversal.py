@@ -13,7 +13,6 @@ class Solution:
         def build(i, j, l, r):
             if i>j or l >r:
                 return None
-            print(preorder[i])
             k = index[preorder[i]]
             n = k - l
             node = TreeNode(preorder[i])
