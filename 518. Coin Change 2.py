@@ -1,15 +1,9 @@
-class Solution(object):
-    def change(self, amount, coins):
-        """
-        :type amount: int
-        :type coins: List[int]
-        :rtype: int
-        """
-        if amount == 0:
-            return 1
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
         dp = [0] * (amount + 1)
         dp[0] = 1
-        for c in coins:
-            for i in range(c, amount + 1):
-                dp[i] += dp[i - c]
+        for coin in coins:
+            for i in range(amount+1-coin):
+                dp[i+coin] += dp[i]
+        
         return dp[amount]
