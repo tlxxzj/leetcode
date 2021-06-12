@@ -8,3 +8,4 @@ class Solution:
             sub[c] = i
             sub_len = max(sub_len, i-k+1)
         return sub_len
+
