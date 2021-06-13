@@ -1,21 +1,21 @@
-import copy
 class SnapshotArray:
 
     def __init__(self, length: int):
-        self.arr = [0] * length
         self.snaps = [{}]
-        
 
     def set(self, index: int, val: int) -> None:
         self.snaps[-1][index] = val
 
     def snap(self) -> int:
-        self.snaps.append(copy.deepcopy(self.snaps[-1]))
-        return len(self.snaps) - 2
-        
+        self.snaps.append({})
+        return len(self.snaps)-2        
 
     def get(self, index: int, snap_id: int) -> int:
-        return self.snaps[snap_id].get(index, self.arr[index])
+        for i in range(snap_id, -1, -1):
+            if index in self.snaps[i]:
+                return self.snaps[i][index]
+        return 0
+
 
 
 # Your SnapshotArray object will be instantiated and called as such:
