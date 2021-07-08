@@ -1,18 +1,15 @@
 class Solution:
-    def numRabbits(self, answers):
-        """
-        :type answers: List[int]
-        :rtype: int
-        """
-        cnt = 0
-        count = [0] * 1000
-        for i in answers:
-            if i == 0:
-                cnt += 1
-                continue
-            count[i] += 1
-        for i, e in enumerate(count):
-            if i== 0 or e == 0:
-                continue
-            cnt += ((e + i) // (i + 1)) * (i + 1)
-        return cnt
+    def numRabbits(self, answers: List[int]) -> int:
+        ret = 0
+        rabbits = {}
+        for ans in answers:
+            if ans == 0:
+                ret += 1
+            elif ans in rabbits:
+                rabbits[ans] = rabbits[ans] - 1
+                if rabbits[ans] == 0:
+                    del rabbits[ans]
+            else:
+                rabbits[ans] = ans
+                ret += ans+1
+        return ret
