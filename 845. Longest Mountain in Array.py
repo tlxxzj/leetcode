@@ -1,21 +1,20 @@
 class Solution:
-    def longestMountain(self, A: List[int]) -> int:
+    def longestMountain(self, arr: List[int]) -> int:
         ret = 0
-        lenA = len(A)
-        left = 0
-        right = 0
-        i = 1
-        while i < lenA:
-            while i < lenA and A[i] > A[i-1]:
-                i += 1
-                left += 1
-            while i < lenA and A[i] < A[i-1]:
-                i += 1
-                right += 1
-            if left > 0 and right > 0 and left + right + 1 >= 3:
-                ret = max(ret, left + right + 1)
-            if i < lenA and A[i] == A[i-1]:
-                i += 1
-            left = right = 0
-        
+        n = len(arr)
+        up, down = 0, 0
+        for i in range(1, n):
+            if arr[i] > arr[i-1]:
+                down = 0
+                up += 1
+            elif arr[i] < arr[i-1]:
+                down += 1
+                if up > 0:
+                    ret = max(ret, up + down + 1)
+                    if i+1 < n and arr[i] <= arr[i+1]:
+                        up, down = 0,0
+            else:
+                up, down = 0, 0
         return ret
+
+            
