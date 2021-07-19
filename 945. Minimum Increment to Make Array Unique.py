@@ -1,13 +1,11 @@
-class Solution(object):
-    def minIncrementForUnique(self, A):
-        """
-        :type A: List[int]
-        :rtype: int
-        """
-        moves = 0
-        A.sort()
-        n = len(A)
-        for i in range(1, n):
-            moves += max(A[i-1]+1-A[i], 0)
-            A[i] = max(A[i], A[i-1]+1)
-        return moves
+class Solution:
+    def minIncrementForUnique(self, nums: List[int]) -> int:
+        nums.sort()
+        ret = 0
+        k = -1
+        for num in nums:
+            if num <= k:
+                k += 1
+                ret += k - num
+            k = max(num, k)
+        return ret
