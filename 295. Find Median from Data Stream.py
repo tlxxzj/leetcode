@@ -17,12 +17,6 @@ class Heap:
         else:
             return hq.heappop(self._data)
     
-    def replace(self, x):
-        if self._reverse:
-            hq.heapreplace(self._data, -x)
-        else:
-            hq.heapreplace(self._data, x)
-    
     def front(self):
         if self._reverse:
             return -self._data[0]
