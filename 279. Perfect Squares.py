@@ -1,18 +1,23 @@
-class Solution(object):
-    def numSquares(self, n):
-        """
-        :type n: int
-        :rtype: int
-        """
-        inf = float('inf')
-        dp = [inf for i in xrange(n+1)]
+class Solution:
+    def getSquares(self, n):
+        ret = []
+        for i in range(1, n):
+            if i*i <= n:
+                ret.append(i*i)
+            else:
+                break
+        return ret
+    
+    def numSquares(self, n: int) -> int:
+        squares = self.getSquares(n)
+        dp = [n] * (n+1)
         dp[0] = 0
-        for i in xrange(n):
-            j=1
-            j2 = j*j+i
-            while j2<=n:
-                dp[j2] = min(dp[j2], dp[i]+1)
-                j += 1
-                j2 = j*j+i
-        return dp[n]
         
+        for i in range(1, n+1):
+            for s in squares:
+                if i-s >= 0:
+                    dp[i] = min(dp[i], dp[i-s]+1)
+                else:
+                    break
+        #print(dp)
+        return dp[n]
