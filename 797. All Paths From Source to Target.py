@@ -1,28 +1,16 @@
 class Solution:
-    def allPathsSourceTarget(self, graph):
-        """
-        :type graph: List[List[int]]
-        :rtype: List[List[int]]
-        """
-        def findPath(g, i, n, v, p, r):
-            if i == n:
-                r.append(p[:])
+    def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+        n = len(graph)        
+        ret = []
+        path = [0] * n
+        def dfs(i, p, q):
+            path[i] = p
+            if p == q:
+                ret.append(path[:i+1])
                 return
-            for j in g[i]:
-                if not v[j]:
-                    p.append(j)
-                    v[j] = True
-                    findPath(g, j, n, v, p, r)
-                    p.pop()
-                    v[j] = False
+            for j in graph[p]:
+                dfs(i+1, j, q)
         
-        n = len(graph) - 1
-        v = [False] * (n + 1)
-        p = []
-        r = []
-        
-        p.append(0)
-        v[0] = True
-        findPath(graph, 0, n, v, p, r)
-        
-        return r
+        dfs(0, 0, n-1)
+
+        return ret
