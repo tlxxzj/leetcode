@@ -6,11 +6,17 @@
 #         self.right = right
 class Solution:
     def pruneTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        if not root:
+        def prune(node):
+            if not node:
+                return 0
+            l, r = prune(node.left), prune(node.right)
+            if l == 0:
+                node.left = None
+            if r == 0:
+                node.right = None
+            return node.val | l | r
+        
+        if (not root) or ((root.val | prune(root)) == 0):
             return None
-        root.left = self.pruneTree(root.left)
-        root.right = self.pruneTree(root.right)
-        if root.val == 1 or (root.left and root.left.val == 1) or (root.right and root.right.val == 1):
-            return root
-        return None
+        return root
         
