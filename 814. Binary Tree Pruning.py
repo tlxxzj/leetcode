@@ -1,28 +1,16 @@
 # Definition for a binary tree node.
 # class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
-    def pruneTree(self, root):
-        """
-        :type root: TreeNode
-        :rtype: TreeNode
-        """
-        root, val = self._prune(root)
-        return root
-
-    def _prune(self, root):
-    	if root is None:
-    		return root, 0
-    	
-    	lnode, lval = self._prune(root.left)
-    	root.left = lnode
-    	rnode, rval = self._prune(root.right)
-    	root.right = rnode
-    	val = root.val + lval + rval
-    	if val == 0:
-    		root = None
-    	return root, val
+    def pruneTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return None
+        root.left = self.pruneTree(root.left)
+        root.right = self.pruneTree(root.right)
+        if root.val == 1 or (root.left and root.left.val == 1) or (root.right and root.right.val == 1):
+            return root
+        return None
+        
