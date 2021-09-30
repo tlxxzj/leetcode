@@ -1,23 +1,18 @@
 class Solution:
-    def partitionLabels(self, S):
-        """
-        :type S: str
-        :rtype: List[int]
-        """
+    def partitionLabels(self, s: str) -> List[int]:
         count = {}
-        for c in S:
+        for c in s:
             count[c] = count.get(c, 0) + 1
         
         ret = []
-        x = 0
-        lasti = -1
-        for i in range(len(S)):
-            c = S[i]
-            x += count[c]
-            count[c] = 0
+        p, size, x = set(), 0, 0
+        for c in s:
+            size += 1
+            if c not in p:
+                p.add(c)
+                x += count[c]
             x -= 1
             if x == 0:
-                ret.append(i-lasti)
-                lasti = i
+                ret.append(size)
+                p, size, x = set(), 0, 0
         return ret
-        
