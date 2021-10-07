@@ -1,17 +1,13 @@
-class Solution(object):
-    def validateStackSequences(self, pushed, popped):
-        """
-        :type pushed: List[int]
-        :type popped: List[int]
-        :rtype: bool
-        """
-        stack = []
+class Solution:
+    def validateStackSequences(self, pushed: List[int], popped: List[int]) -> bool:
+        if len(pushed) != len(popped):
+            return False
         popped.reverse()
-        for e in pushed:
-            stack.append(e)
-            while len(stack) > 0 and popped[-1] == stack[-1]:
+        stack = []
+        for i in pushed:
+            stack.append(i)
+            while len(stack) > 0 and stack[-1] == popped[-1]:
                 stack.pop()
                 popped.pop()
         return len(stack) == 0
-        
         
