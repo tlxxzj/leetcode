@@ -1,17 +1,15 @@
-class Solution(object):
-    def matrixScore(self, A):
-        """
-        :type A: List[List[int]]
-        :rtype: int
-        """
-        n,m = len(A), len(A[0])
-        ret = n*(1<<(m-1))
-        for i in range(1, m):
-            zero = 0
+class Solution:
+    def matrixScore(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        ret = m * (1 << (n - 1))
+        for i in range(m):
+            if grid[i][0] == 1:
+                continue
             for j in range(n):
-                if A[j][0] + A[j][i] == 1:
-                    zero += 1
-            x = max(zero, n-zero)
-            ret += x*(1<<(m-i-1))
+                grid[i][j] ^= 1
+        for j in range(1, n):
+            v = 0
+            for i in range(m):
+                 v += grid[i][j]
+            ret += max(v, m-v) * (1 <<(n-1-j))
         return ret
-        
