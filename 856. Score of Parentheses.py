@@ -1,15 +1,16 @@
 class Solution:
-    def scoreOfParentheses(self, S: str) -> int:
-        ret = 0
-        q = []
-        for c in S:
+    def scoreOfParentheses(self, s: str) -> int:
+        ret = []
+        for c in s:
             if c == '(':
-                q.append(c)
+                ret.append(c)
             else:
-                x = 0
-                while q[-1] != '(':
-                    x += q.pop()
-                q.pop()
-                y = max(2*x, 1)
-                q.append(y)
-        return sum(q)
+                v = 0
+                while ret[-1] != '(':
+                    v += ret.pop()
+                ret.pop()
+                if v == 0:
+                    ret.append(1)
+                else:
+                    ret.append(v*2)
+        return sum(ret)
