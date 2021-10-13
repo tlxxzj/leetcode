@@ -1,9 +1,8 @@
 class Solution:
-    def reorderedPowerOf2(self, N: int) -> bool:
-        x = 1
-        s = set()
-        while x <= 1000000000:
-            y = ''.join(sorted(list(str(x))))
-            s.add(y)
-            x *= 2
-        return ''.join(sorted(list(str(N)))) in s
+    def reorderedPowerOf2(self, n: int) -> bool:
+        p2 = set()
+        for i in range(32):
+            num = 1 << i
+            num = ''.join(sorted(list(str(num))))
+            p2.add(num)
+        return ''.join(sorted(list(str(n)))) in p2
