@@ -1,29 +1,21 @@
 """
 # Definition for a Node.
-class Node(object):
-    def __init__(self, val, children):
+class Node:
+    def __init__(self, val=None, children=None):
         self.val = val
         self.children = children
 """
-class Solution(object):
-    def levelOrder(self, root):
-        """
-        :type root: Node
-        :rtype: List[List[int]]
-        """
-        if not root:
-            return []
+
+class Solution:
+    def levelOrder(self, root: 'Node') -> List[List[int]]:
         ret = []
-        q = [root]
+        q = [root] if root else []
         while len(q) > 0:
+            ret.append([node.val for node in q])
             q2 = []
-            x = []
-            for r in q:
-                x.append(r.val)
-                if r.children:
-                    for c in r.children:
-                        q2.append(c)
+            for node in q:
+                if node.children:
+                    for n in node.children:
+                        q2.append(n)
             q = q2
-            ret.append(x)
         return ret
-        
