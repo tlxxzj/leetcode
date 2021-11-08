@@ -1,113 +1,60 @@
-class MyCircularDeque(object):
+class MyCircularDeque:
+    def __init__(self, k: int):
+        self._data = [0] * k
+        self._k = k
+        self._size = 0
+        self._f = 0
+        self._r = 0
 
-    def __init__(self, k):
-        """
-        Initialize your data structure here. Set the size of the deque to be k.
-        :type k: int
-        """
-        self.k = k
-        self.f = []
-        self.r = []
-        
-
-    def insertFront(self, value):
-        """
-        Adds an item at the front of Deque. Return true if the operation is successful.
-        :type value: int
-        :rtype: bool
-        """
-        if len(self.f) + len(self.r) == self.k:
+    def insertFront(self, value: int) -> bool:
+        if self.isFull():
             return False
-        self.f.append(value)
+        if self._size == 0:
+            self._r = (self._f + 1) % self._k
+        self._data[self._f] = value
+        self._f = (self._f - 1) % self._k
+        self._size += 1
+        return True
+
+    def insertLast(self, value: int) -> bool:
+        if self.isFull():
+            return False
+        if self._size == 0:
+            self.f = (self._r - 1) % self._k
+        self._data[self._r] = value
+        self._r = (self._r + 1) % self._k
+        self._size += 1
         return True
         
-
-    def insertLast(self, value):
-        """
-        Adds an item at the rear of Deque. Return true if the operation is successful.
-        :type value: int
-        :rtype: bool
-        """
-        if len(self.f) + len(self.r) == self.k:
-            return False
-        self.r.append(value)
-        return True        
-        
-
-    def deleteFront(self):
-        """
-        Deletes an item from the front of Deque. Return true if the operation is successful.
-        :rtype: bool
-        """
+    def deleteFront(self) -> bool:
         if self.isEmpty():
             return False
-        if len(self.f) > 0:
-            self.f.pop()
-        else:
-            self.f = self.r
-            self.r = []
-            self.f.reverse()
-            self.f.pop()
+        self._f = (self._f + 1) % self._k
+        self._size -= 1
         return True
-        
 
-    def deleteLast(self):
-        """
-        Deletes an item from the rear of Deque. Return true if the operation is successful.
-        :rtype: bool
-        """
+    def deleteLast(self) -> bool:
         if self.isEmpty():
             return False
-        if len(self.r) > 0:
-            self.r.pop()
-        else:
-            self.r=self.f
-            self.f=[]
-            self.r.reverse()
-            self.r.pop()
+        self._r = (self._r - 1) % self._k
+        self._size -= 1
         return True
-        
 
-    def getFront(self):
-        """
-        Get the front item from the deque.
-        :rtype: int
-        """
+    def getFront(self) -> int:
         if self.isEmpty():
             return -1
-        if len(self.f) == 0:
-            return self.r[0]
-        return self.f[-1]
-        
+        return self._data[(self._f + 1) % self._k]
 
-    def getRear(self):
-        """
-        Get the last item from the deque.
-        :rtype: int
-        """
+    def getRear(self) -> int:
         if self.isEmpty():
             return -1
-        if len(self.r) == 0:
-            return self.f[0]
-        return self.r[-1]
-        
-        
+        return self._data[(self._r - 1) % self._k]
 
-    def isEmpty(self):
-        """
-        Checks whether the circular deque is empty or not.
-        :rtype: bool
-        """
-        return len(self.f) + len(self.r) == 0
-        
+    def isEmpty(self) -> bool:
+        return self._size == 0
 
-    def isFull(self):
-        """
-        Checks whether the circular deque is full or not.
-        :rtype: bool
-        """
-        return len(self.f) + len(self.r) == self.k
-        
+    def isFull(self) -> bool:
+        return self._size == self._k
 
 
 # Your MyCircularDeque object will be instantiated and called as such:
