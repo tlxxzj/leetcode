@@ -1,15 +1,9 @@
-class Solution(object):
-    def countNumbersWithUniqueDigits(self, n):
-        """
-        :type n: int
-        :rtype: int
-        """
-        n = min(n, 10)
-        ret = 0
-        f=1
-        for i in range(n):
-            f *= 10 -i
-            ret += f - f/10
-        return ret + 1
-    
+class Solution:
+    def countNumbersWithUniqueDigits(self, n: int) -> int:
+        from functools import reduce
+        def countN(x):
+            if x == 0: return 1
+            if x == 1: return 9
+            return reduce(lambda x, y: x * (9-y), range(x-1), 9)
+        return reduce(lambda x, y: x + countN(y), range(n+1), 0)
         
