@@ -1,17 +1,22 @@
 class Solution:
     def mincostTickets(self, days: List[int], costs: List[int]) -> int:
-        dyas = set(days)
-        dp = [float('inf')] * (366 + 30)
-        dp[0] = 0
-        for i in range(1, 366):
-            if i in days:
-                dp[i] = min(dp[i], dp[i-1] + costs[0])
-                for j in range(7):
-                    dp[i+j] = min(dp[i+j], dp[i-1] + costs[1])
-                for j in range(30):
-                    dp[i+j] = min(dp[i+j], dp[i-1] + costs[2])
-            else:
-                dp[i] = min(dp[i], dp[i-1])
-        
-        #print(dp[:max(days)])
-        return dp[max(days)]
+        n = len(days)
+        dp = [float('inf')] * (n + 1)
+        dp[-1] = 0
+        for i in range(n):
+            #costs[0]
+            dp[i] = min(dp[i], dp[i-1] + costs[0])
+            #costs[1]
+            j = i
+            while j < n and days[j] - days[i] < 7:
+                dp[j] = min(dp[j], dp[i-1] + costs[1])
+                j += 1
+            #cost[2]
+            j = i
+            while j < n and days[j] - days[i] < 30:
+                dp[j] = min(dp[j], dp[i-1] + costs[2])
+                j += 1
+        #print(dp)
+        return dp[n-1]
+
+                
