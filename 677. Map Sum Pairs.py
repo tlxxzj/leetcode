@@ -1,55 +1,29 @@
-class MapSum(object):
-
+class MapSum:
     def __init__(self):
-        """
-        Initialize your data structure here.
-        """
-        self.d = {}
-        
-
-    def insert(self, key, val):
-        """
-        :type key: str
-        :type val: int
-        :rtype: void
-        """
-        if not key:
-            return
-        d = self.d
-        x = None
+        self._root = [{}, 0]
+    def insert(self, key: str, val: int) -> None:
+        node = self._root
         for c in key:
-            if c in d:
-                x = d[c]
-                d = x[0]
-            else:
-                x = [{}, 0]
-                d[c] = x
-                d = x[0]
-        x[1] = val
+            if c not in node[0]:
+                node[0][c] = [{}, 0]
+            node = node[0][c]
+        node[1] = val
 
-    def sum(self, prefix):
-        """
-        :type prefix: str
-        :rtype: int
-        """
-        d = self.d
-        x = None
-        for c in prefix:
-            if c in d:
-                x = d[c]
-                d = x[0]
-            else:
-                return 0
-        
+    def sum(self, prefix: str) -> int:
         ret = 0
-        q = [x]
+        node = self._root
+        for c in prefix:
+            if c not in node[0]:
+                return 0
+            node = node[0][c]
+        q = [node]
         while len(q) > 0:
-            x = q.pop()
-            ret += x[1]
-            for y in x[0].values():
-                q.append(y)
+            node = q.pop()
+            ret += node[1]
+            q += node[0].values()
         return ret
         
+
 
 
 # Your MapSum object will be instantiated and called as such:
