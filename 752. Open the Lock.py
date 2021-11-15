@@ -1,32 +1,44 @@
+class Queue:
+    def __init__(self):
+        self.a = []
+        self.b = []
+    
+    def append(self, x):
+        self.a.append(x)
+    
+    def pop(self):
+        if len(self.b) == 0:
+            self.a, self.b = self.b, self.a
+            self.b.reverse()
+        return self.b.pop()
+    
+    def __len__(self):
+        return len(self.a) + len(self.b)
+
+
 class Solution:
     def openLock(self, deadends: List[str], target: str) -> int:
-        deadends = set([tuple((int(i) for i in d)) for d in deadends])
-        if (0,0,0,0) in deadends:
+        deadends = set(deadends)
+        if '0000' in deadends:
             return -1
-        target = tuple((int(i) for i in target))
-        wheels = [i for i in range(10)]
-        visited = set([(0,0,0,0)])
-        import queue
-        q = queue.Queue()
-        q.put(((0,0,0,0), 0))
-        while q.qsize() > 0:
-            seq, step = q.get()
-            if seq == target:
+        codes = set('0000')
+        q = Queue()
+        q.append(('0000', 0))
+        while len(q) > 0:
+            code, step = q.pop()
+            if code == target:
                 return step
             for i in range(4):
-                x = wheels[(seq[i]+1)%10]
-                seq2 = list(seq)
-                seq2[i] = x
-                seq2 = tuple(seq2)
-                if (seq2 not in visited) and (seq2 not in deadends):
-                    visited.add(seq2)
-                    q.put((seq2, step+1))
-                
-                x = wheels[(seq[i]-1)%10]
-                seq2 = list(seq)
-                seq2[i] = x
-                seq2 = tuple(seq2)
-                if (seq2 not in visited) and (seq2 not in deadends):
-                    visited.add(seq2)
-                    q.put((seq2, step+1))
+                newcode = [int(num) for num in code]
+                newcode[i] = (newcode[i] + 1) % 10
+                newcode = ''.join([str(num) for num in newcode])
+                if (newcode not in deadends) and (newcode not in codes):
+                    codes.add(newcode)
+                    q.append((newcode, step + 1))
+                newcode = [int(num) for num in code]
+                newcode[i] = (newcode[i] - 1) % 10
+                newcode = ''.join([str(num) for num in newcode])
+                if (newcode not in deadends) and (newcode not in codes):
+                    codes.add(newcode)
+                    q.append((newcode, step + 1))
         return -1
