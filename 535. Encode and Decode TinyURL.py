@@ -1,31 +1,24 @@
 class Codec:
-
     def __init__(self):
-        self._url = {}
-        self._url2 = {}
-    
-    def encode(self, longUrl):
+        self._count = 0
+        self._l2surls = {}
+        self._s2lurls = {}
+
+    def encode(self, longUrl: str) -> str:
         """Encodes a URL to a shortened URL.
-        
-        :type longUrl: str
-        :rtype: str
         """
-        if longUrl not in self._url:
-            shortUrl = 'http://tinyurl.com/' + str(len(self._url))
-            self._url[longUrl] = shortUrl
-            self._url2[shortUrl] = longUrl
-        return self._url[longUrl]
+        if longUrl not in self._l2surls:
+            self._count += 1
+            surl = f'https://tinyurl.com/${self._count}'
+            self._s2lurls[surl] = longUrl
+            self._l2surls[longUrl] = surl
+        return self._l2surls[longUrl]
         
 
-    def decode(self, shortUrl):
+    def decode(self, shortUrl: str) -> str:
         """Decodes a shortened URL to its original URL.
-        
-        :type shortUrl: str
-        :rtype: str
         """
-        return self._url2[shortUrl]
-        
-        
+        return self._s2lurls[shortUrl]
 
 # Your Codec object will be instantiated and called as such:
 # codec = Codec()
