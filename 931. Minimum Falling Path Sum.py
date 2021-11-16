@@ -1,21 +1,13 @@
-class Solution(object):
-    def minFallingPathSum(self, A):
-        """
-        :type A: List[List[int]]
-        :rtype: int
-        """
-        m, n = len(A), len(A[0])
-        dp1 = A[0][:]
-        dp2 = []
-        for i in range(1, m):
-            dp2 = [0] * n
-            for j in range(1, n-1):
-                dp2[j] = A[i][j] + min(dp1[j], dp1[j-1], dp1[j+1])
-            if n > 1:
-                dp2[0] = A[i][0] + min(dp1[0], dp1[1])
-                dp2[n-1] = A[i][n-1] + min(dp1[n-1], dp1[n-2])
-            else:
-                dp2[0] = A[i][0] + dp1[0]
-            #print(dp1, dp2)
-            dp1 = dp2
-        return min(dp1)
+class Solution:
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+       n = len(matrix)
+       r1, r2 = [0] * n, [0] * n
+       for row in matrix:
+           for i in range(n):
+               r2[i] = r1[i] + row[i]
+               if i > 0:
+                   r2[i] = min(r2[i], row[i] + r1[i-1])
+               if i < n - 1:
+                   r2[i] = min(r2[i], row[i] + r1[i+1])
+           r1, r2 = r2, r1
+       return min(r1)
