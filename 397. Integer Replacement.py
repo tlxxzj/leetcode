@@ -1,19 +1,8 @@
-class Solution(object):
-    def integerReplacement(self, n):
-        """
-        :type n: int
-        :rtype: int
-        """
-        ret=0
-        while n>1:
-            if n&1:
-                ret += 1
-                if n>3 and n&2:
-                    n +=1
-                else:
-                    n -= 1
-            else:
-                n >>= 1
-                ret += 1
-        return ret
-        
+class Solution:
+    def integerReplacement(self, n: int) -> int:
+        if n <= 1:
+            return 0
+        if n & 1 == 0:
+            return self.integerReplacement(n>>1) + 1
+        else:
+            return 1 + min(self.integerReplacement(n+1), self.integerReplacement(n-1))
