@@ -7,8 +7,7 @@ class Solution:
         """
         :rtype: int
         """
-        x = 11
-        while x > 10:
-            x = (rand7()-1) * 7 + rand7()-1+1
-        
-        return x
+        while True:
+            x = (rand7()-1) * 7 + (rand7()-1) + 1
+            if x <= 10:
+                return x
