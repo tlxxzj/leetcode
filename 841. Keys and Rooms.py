@@ -1,16 +1,12 @@
 class Solution:
-    def canVisitAllRooms(self, rooms):
-        """
-        :type rooms: List[List[int]]
-        :rtype: bool
-        """
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+        n = len(rooms)
+        visited = [0] * n
         keys = [0]
-        used_keys = set()
-        used_keys.add(0)
         while len(keys) > 0:
-            k = keys.pop()
-            for key in rooms[k]:
-                if key not in used_keys:
-                    used_keys.add(key)
-                    keys.append(key)
-        return len(used_keys) == len(rooms)
+            key = keys.pop()
+            if visited[key] == 1:
+                continue
+            visited[key] = 1
+            keys.extend(rooms[key])
+        return sum(visited) == n
