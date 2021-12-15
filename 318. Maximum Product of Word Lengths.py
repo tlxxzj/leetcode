@@ -1,20 +1,15 @@
-class Solution(object):
-    def maxProduct(self, words):
-        """
-        :type words: List[str]
-        :rtype: int
-        """
-        if not words:
-            return 0
+class Solution:
+    def maxProduct(self, words: List[str]) -> int:
         n = len(words)
-        d = [0] * n
-        for i, w in enumerate(words):
-            for j, c in enumerate(w):
-                d[i] |= 1<<(ord(c)-ord('a'))
+        chars = [0] * n
+        orda = ord('a')
+        for i in range(n):
+            for c in words[i]:
+                chars[i]  = chars[i] | (1<<(ord(c) - orda))
         ret = 0
         for i in range(n):
             for j in range(i+1, n):
-                if d[i] & d[j] == 0:
-                    ret = max(ret, len(words[i])*len(words[j]))
+                if chars[i] & chars[j] > 0:
+                    continue
+                ret = max(ret, len(words[i]) * len(words[j]))
         return ret
-        
