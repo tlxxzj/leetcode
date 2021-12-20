@@ -1,26 +1,22 @@
 class Solution:
-    def pancakeSort(self, A):
-        """
-        :type A: List[int]
-        :rtype: List[int]
-        """
-        sortedA = sorted(A, reverse=True)
-        flips = []
-        lenA = len(A)
+    def pancakeSort(self, arr: List[int]) -> List[int]:
+        def reverse(array, a, b):
+            while a < b:
+                array[a], array[b] = array[b], array[a]
+                a += 1
+                b -= 1
         
-        def reverse(arr, l, r):
-            while l < r:
-                arr[l], arr[r] = arr[r], arr[l]
-                l += 1
-                r -= 1
-            return arr
-
-        for i in range(lenA):
-            index = A.index(sortedA[i])
-            flips.append(index + 1)
-            flips.append(lenA - i)
-            reverse(A, 0, index)
-            reverse(A, 0, lenA - i - 1)
+        ret = []
+        n = len(arr)
+        i = n
+        while i > 0:
+            j = arr.index(i)
+            if j+1 == i:
+                i -= 1
+                continue
+            ret.append(j+1)
+            ret.append(i)
+            reverse(arr, 0, j)
+            reverse(arr, 0, i-1)
+        return ret
             
-        return flips
-        
