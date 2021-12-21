@@ -1,25 +1,17 @@
-class Solution(object):
-    def getHint(self, secret, guess):
-        """
-        :type secret: str
-        :type guess: str
-        :rtype: str
-        """
-        a, b = 0, 0
+class Solution:
+    def getHint(self, secret: str, guess: str) -> str:
+        from collections import defaultdict
         n = len(secret)
-        h = {}
+        a, b = 0, 0
+        s, g = defaultdict(int), defaultdict(int)
         for i in range(n):
             if secret[i] == guess[i]:
                 a += 1
             else:
-                h[secret[i]] = h.get(secret[i], 0) + 1
+                s[secret[i]] += 1
+                g[guess[i]] += 1
+        for key in g:
+            if key in s:
+                b += min(s[key], g[key])
         
-        for i in range(n):
-            if secret[i] != guess[i]:
-                if h.get(guess[i], 0) > 0:
-                    b += 1
-                    h[guess[i]] -= 1
-        
-        return str(a)+'A'+str(b)+'B'
-        
-        
+        return f'{a}A{b}B'
