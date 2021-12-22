@@ -1,30 +1,25 @@
 class Solution:
     def lengthLongestPath(self, input: str) -> int:
-        ret = 0
-        l = [0]
-        lf = 0
-        t = 0
-        f = False
-        for c in input + '\n':
-            if c == '\n':
-                if t >= len(l) or t == 0:
-                    if t == 0:
-                        l[t] = lf
-                    else:
-                        l.append(l[t-1] + lf + 1)
+        lines = input.split('\n')
+        maxPathLen = 0
+        dirs = []
+        for line in lines:
+            t = line.count('\t')
+            # file
+            if '.' in line:
+                if t == 0:
+                    maxPathLen = max(maxPathLen, len(line))
                 else:
-                    l[t] = l[t-1] + lf + 1
-                if f:
-                    ret = max(ret, l[t])
-                lf = 0
-                t = 0
-                f = False
-            elif c == '\t':
-                t += 1
+                    path = dirs[t-1] + '/' + line[t:]
+                    #print(path)
+                    maxPathLen = max(maxPathLen, len(path))
+            # dir
             else:
-                lf += 1
-                if c == '.':
-                    f = True
-            
-        
-        return ret
+                if t == len(dirs):
+                    dirs.append('')
+                if t == 0:
+                    dirs[0] = line
+                else:
+                    dirs[t] = dirs[t-1] + '/' + line[t:]
+            #print(dirs)
+        return maxPathLen
