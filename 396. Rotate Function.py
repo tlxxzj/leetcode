@@ -1,17 +1,10 @@
-class Solution(object):
-    def maxRotateFunction(self, A):
-        """
-        :type A: List[int]
-        :rtype: int
-        """
-        s = sum(A)
-        cur = 0
-        n = len(A)
-        for i in range(n):
-            cur += i*A[i]
-        ret = cur
-        for i in A:
-            cur = cur-s+n*i
-            ret = max(ret, cur)
+class Solution:
+    def maxRotateFunction(self, nums: List[int]) -> int:
+        n = len(nums)
+        sumNums = sum(nums)
+        ret = sum([i * nums[i] for i in range(n)])
+        f = ret
+        for i in range(0, n-1):
+            f = f - sumNums  + n * nums[i]
+            ret = max(ret, f)
         return ret
-            
