@@ -1,27 +1,23 @@
 class Solution:
-    def isNStraightHand(self, hand, W):
-        """
-        :type hand: List[int]
-        :type W: int
-        :rtype: bool
-        """
+    def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+        from collections import defaultdict
         n = len(hand)
-        if n % W != 0: return False
-
-        cards = {}
-        for h in hand:
-            cards[h] = cards.get(h, 0) + 1
-
-        hand = list(set(hand))
+        if n % groupSize != 0:
+            return False
+        
+        count = defaultdict(int)
+        for num in hand:
+            count[num] += 1
+        
         hand.sort()
-        for h in hand:
-            c = cards[h]
-            if c == 0: continue
-            for i in range(h, h + W):
-                x = cards.get(i, 0)
-                if x < c:
+        for num in hand:
+            if count[num] == 0:
+                continue
+            for i in range(num, num+groupSize):
+                if count[i] == 0:
                     return False
-                cards[i] = x - c
-        return sum(cards.values()) == 0
+                count[i] -= 1
+        
+        return True
 
-
+        
