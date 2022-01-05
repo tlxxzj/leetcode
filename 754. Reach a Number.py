@@ -1,26 +1,11 @@
 class Solution:
-    def reachNumber(self, target):
-        """
-        :type target: int
-        :rtype: int
-        """
-        
-        target = abs(target)
-        
-        sum = 1
-        n = 1
-        while sum < target:
-            n += 1
-            sum += n
-        
-        d = sum - target
-        
-        if d % 2 == 0:
-            return n
-        
-        while d % 2 != 0:
-            n += 1
-            sum += n
-            d = sum - target
-        
-        return n
+    def reachNumber(self, target: int) -> int:
+        if target < 0:
+            target = -target
+        ret = 1
+        s = 0
+        while True:
+            s += ret
+            if s == target or (s > target and (s-target)%2==0):
+                return ret
+            ret += 1
