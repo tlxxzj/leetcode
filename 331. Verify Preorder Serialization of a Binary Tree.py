@@ -1,25 +1,18 @@
-class Solution(object):
-    def isValidSerialization(self, preorder):
-        """
-        :type preorder: str
-        :rtype: bool
-        """
-        if not preorder:
+class Solution:
+    def isValidSerialization(self, preorder: str) -> bool:
+        nodes = preorder.split(',')
+        nodes.reverse()
+        n = len(nodes)
+        if (n - 1) % 2 != 0:
             return False
-        pre = preorder.split(',')
-        n = len(pre)
-        i = 0
-        ret = [True]
-        def valid(i):
-            if i >= n:
-                ret[0] = False
-            elif pre[i] != '#':
-                l = valid(i+1)
-                r = valid(l+1)
-                return r        
-            return i
-
-        if valid(0) != n-1:
-            ret[0] = False
-        return ret[0]
-
+        
+        def isValid():
+            if len(nodes) == 0:
+                return False
+            if nodes.pop() == '#':
+                return True
+            return isValid() and isValid()
+        
+        return isValid() and len(nodes) == 0
+            
+        
