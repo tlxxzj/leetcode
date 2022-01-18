@@ -1,25 +1,13 @@
-class Solution(object):
-    def numberOfArithmeticSlices(self, A):
-        """
-        :type A: List[int]
-        :rtype: int
-        """
-        n = len(A)
-        if n < 3:
-            return 0
-        
+class Solution:
+    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+        n = len(nums)
         ret = 0
-        i = 2
-        k = 0
-        diff = A[1] - A[0]
-        
-        while i < n:
-            d = A[i] - A[i - 1]
-            if diff == d:
-                ret += (i-k+1)-2
+        cnt = 0
+        for i in range(2, n):
+            if nums[i-1] - nums[i-2] == nums[i] - nums[i-1]:
+                cnt += 1
             else:
-                diff = d
-                k = i - 1
-            i += 1
-        
+                ret += (1+cnt) * cnt // 2
+                cnt = 0
+        ret += (1+cnt) * cnt // 2
         return ret
