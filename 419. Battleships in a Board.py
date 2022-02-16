@@ -1,20 +1,10 @@
-class Solution(object):
-    def countBattleships(self, board):
-        """
-        :type board: List[List[str]]
-        :rtype: int
-        """
-        m = len(board)
-        if m == 0:
-            return 0
-        n = len(board[0])
-        if n == 0:
-            return 0
+class Solution:
+    def countBattleships(self, board: List[List[str]]) -> int:
         ret = 0
+        m, n = len(board), len(board[0])
         for i in range(m):
             for j in range(n):
-                if board[i][j] == 'X' and (i-1 < 0 or board[i-1][j] != 'X') and (j-1 < 0 or board[i][j-1] != 'X'): 
-                    ret += 1
-        
+                if board[i][j] == 'X':
+                    if (i == 0 or board[i-1][j] == '.') and (j == 0 or board[i][j-1] == '.'):
+                        ret += 1
         return ret
-        
