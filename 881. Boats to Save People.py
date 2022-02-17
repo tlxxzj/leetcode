@@ -2,7 +2,7 @@ class Solution:
     def numRescueBoats(self, people: List[int], limit: int) -> int:
         n = len(people)
         if n <= 1:
-            return 1
+            return n
         people.sort()
         ret = 0
         i, j = 0, n - 1
@@ -15,6 +15,3 @@ class Solution:
             ret += 1
             i += 1
         return ret
-            
-
-            
