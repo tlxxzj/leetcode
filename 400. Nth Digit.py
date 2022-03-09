@@ -1,23 +1,29 @@
-class Solution(object):
-    def findNthDigit(self, n):
-        """
-        :type n: int
-        :rtype: int
-        """
+class Solution:
+    def findNthDigit(self, n: int) -> int:
         if n < 10:
             return n
-        k, c = 1, 9
-        while n > k * c:
-            n -= k * c
-            k += 1
-            c *= 10
-        x = n / k
-        y = n - x * k
-        #print x, y
-        if y == 0:
-            x = x + c / 9 - 1
-            return int(str(x)[-1])
-        else:
-            x = x + c / 9
-            return int(str(x)[y - 1])
+        def getN(num):
+            x = num
+            cnt = 0
+            i = 0
+            while x >= 10:
+                x = x // 10
+                cnt += 9 * (10 ** i) * (i + 1)
+                i += 1
+            cnt += (num + 1 - 10 ** i) * (i+1)
+            return cnt
         
+        l, r = 1, 1<<31
+        while l < r:
+            m = (l + r) >> 1
+            x = getN(m)
+            if x < n:
+                l = m + 1
+            elif x > n:
+                r = m
+            else:
+                return m % 10
+        y = n - getN(l-1)
+        return int(str(l)[y-1])
+        
+            
