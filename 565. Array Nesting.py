@@ -1,17 +1,18 @@
 class Solution:
     def arrayNesting(self, nums: List[int]) -> int:
-        ret = 0
-        A = nums
-        n = len(A)
-        S = set([])
+        n = len(nums)
+        m, k = 0, 0
+        dp = [0] * n
+
         for i in range(n):
-            if A[i] in S:
+            if dp[i] > 0:
                 continue
-            s = set([])
-            x = i
-            while A[x] not in s:
-                s.add(A[x])
-                S.add(A[x])
-                x = A[x]
-            ret = max(ret, len(s))
-        return ret
+            s = set()
+            j = i
+            while not (j in s):
+                s.add(j)
+                j = nums[j]
+            l = len(s) + dp[j]
+            for x in s:
+                dp[x] = l
+        return max(dp)
