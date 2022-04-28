@@ -1,51 +1,31 @@
-class Solution(object):
-    def checkInclusion(self, s1, s2):
-        """
-        :type s1: str
-        :type s2: str
-        :rtype: bool
-        """
-        len1 = len(s1)
-        len2 = len(s2)
-        if len1 >len2:
-            return False
-        
-        def c2i(c):
-            return ord(c)-ord('a')
-        
-        cnt = [0]*26
-        bl = 0
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        from collections import defaultdict
+        l1, l2 = len(s1), len(s2)
+        d1 = defaultdict(int)
         for c in s1:
-            cnt[c2i(c)] +=1 
-            if cnt[c2i(c)] == 1:
-                bl += 1
+            d1[c] += 1
         
-        for c in s2[:len1-1]:
-            cnt[c2i(c)] -= 1
-            if cnt[c2i(c)] == 0:
-                bl -= 1
-            elif cnt[c2i(c)] == -1:
-                bl += 1
-        
-        for i in range(len1-1, len2):
-            c = s2[i]
-            cnt[c2i(c)] -= 1
-            if cnt[c2i(c)] == 0:
-                bl -= 1
-            elif cnt[c2i(c)] == -1:
-                bl += 1
-            
-            if bl == 0:
-                return True
-            
-            
-            c = s2[i-len1+1]
-            cnt[c2i(c)] += 1
-            if cnt[c2i(c)]==0:
-                bl -= 1
-            elif cnt[c2i(c)] == 1:
-                bl +=1
-                
+        i = 0
+        while i < l2:
+            j = i
+            while i < l2:
+                if s2[i] in d1:
+                    if d1[s2[i]] > 0:
+                        d1[s2[i]] -= 1
+                        if i - j + 1 == l1:
+                            return True
+                    else:
+                        while s2[j] != s2[i]:
+                            d1[s2[j]] += 1  
+                            j += 1
+                        j += 1
+                    i += 1
+                else:
+                    while j < i:
+                        if s2[j] in d1:
+                            d1[s2[j]] += 1
+                        j += 1
+                    break
+            i += 1
         return False
-        
-        
