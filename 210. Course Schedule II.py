@@ -1,34 +1,27 @@
-class Solution(object):
-    def findOrder(self, numCourses, prerequisites):
-        """
-        :type numCourses: int
-        :type prerequisites: List[List[int]]
-        :rtype: List[int]
-        """
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         n = numCourses
+        inCount = [0] *  n
+        #outCount = [0] * n
+        edge = [[] for i in range(n)]
+        for a,b in prerequisites:
+            inCount[a] += 1
+            #outCount[b] += 1
+            edge[b].append(a)
         ret = []
-        s_in = [[] for i in range(n)]
-        s_out = [0] * n
-        for v, u in prerequisites:
-            s_in[u].append(v)
-            s_out[v] += 1
-
         q = []
         for i in range(n):
-            if s_out[i] == 0:
+            if inCount[i] == 0:
                 q.append(i)
-
+        
         while len(q) > 0:
             x = q.pop()
             ret.append(x)
-            for y in s_in[x]:
-                s_out[y] -= 1
-                if s_out[y] == 0:
-                    q.append(y)
-
-        #print(ret)
+            for e in edge[x]:
+                inCount[e] -= 1
+                if inCount[e] == 0:
+                    q.append(e)
         if len(ret) != n:
-            return []
+            ret = []
         return ret
-
-
+        
