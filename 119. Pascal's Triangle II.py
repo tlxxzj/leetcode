@@ -1,15 +1,9 @@
-class Solution(object):
-    def getRow(self, rowIndex):
-        """
-        :type rowIndex: int
-        :rtype: List[int]
-        """
-        ret = [1]
-        for i in xrange(rowIndex):
-            st = [1]
-            for j in range(i):
-                st.append(ret[j]+ret[j+1])
-            st.append(1)
-            ret = st
-        return ret
-        
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        row = [1]
+        for i in range(1, rowIndex+1):
+            row2 = [1] *(i + 1)
+            for j in range(i-1):
+                row2[j+1] = row[j] + row[j+1]
+            row = row2
+        return row
