@@ -1,18 +1,17 @@
-class Solution(object):
-    def isIsomorphic(self, s, t):
-        """
-        :type s: str
-        :type t: str
-        :rtype: bool
-        """
-        if len(s) != len(t):
-            return False
-        d, d2 = {}, {}
-        for i in range(len(s)):
-            a, b = s[i], t[i]
-            if d.get(a, b) != b or d2.get(b,a)!=a:
-                return False
-            d[a] = b
-            d2[b]=a
+class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        n = len(s)
+        m = {}
+        m2 = {}
+        for i in range(n):
+            if s[i] in m:
+                if m[s[i]] != t[i]:
+                    return False
+            if t[i] in m2:
+                if m2[t[i]] != s[i]:
+                    return False
+            else:
+                m[s[i]] = t[i]
+                m2[t[i]] = s[i]
         return True
-        
+                
