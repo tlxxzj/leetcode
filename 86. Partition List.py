@@ -4,19 +4,16 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def partition(self, head: ListNode, x: int) -> ListNode:
-        r1 = ListNode(0)
-        r2 = ListNode(0)
-        h1 = r1
-        h2 = r2
-        cnt = 0
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        r1, r2 = ListNode(), ListNode()
+        h1, h2 = r1, r2
         while head:
             if head.val < x:
                 h1.next = head
                 h1 = h1.next
             else:
                 h2.next = head
-                h2 = h2.next 
+                h2 = h2.next
             head = head.next
         h1.next = r2.next
         h2.next = None
