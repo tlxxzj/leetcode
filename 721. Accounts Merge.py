@@ -1,43 +1,32 @@
 class Solution:
-    def accountsMerge(self, accounts):
-        """
-        :type accounts: List[List[str]]
-        :rtype: List[List[str]]
-        """
-
-        def find(f, x):
-            if x not in f:
-                f[x] = x
-                return x
-            elif x == f[x]:
-                return x
-            else:
-                y = find(f, f[x])
-                f[x] = y
-                return y
-
-
-        def join(f, x, y):
-            x1 = find(f, x)
-            y1 = find(f, y)
-            f[x1] = y1
-
+    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
         f = {}
-        name = {}
+        groups = {}
+        names = {}
+
+        def getf(email):
+            while email != f.get(email, email):
+                email = f[email]
+            return email
+        
         for account in accounts:
-            for e in account[1:]:
-                join(f, account[1], e)
-                name[e] = account[0]
+            name = account[0]
+            root = getf(account[1])
+            for email in account[1:]:
+                f[getf(email)] = root
+                names[email] = name
+            
+        for email in f.keys():
+            group = getf(email)
+            if group not in groups:
+                groups[group] = [names[group]]
+            groups[group].append(email)
+        
+        ret = []
+        for group in groups.values():
+            ret.append([group[0]] + sorted(group[1:]))
+        
+        return ret
+        
 
-        accs = {}
-        for e in f.keys():
-            ef = find(f, e)
-            if ef not in accs:
-                accs[ef] = [e]
-            else:
-                accs[ef].append(e)
-
-        for k, v in accs.items():
-            v.sort()
-
-        return [[name[v[0]]] + v for k, v in accs.items()]
+            
