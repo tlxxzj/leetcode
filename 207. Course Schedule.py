@@ -1,35 +1,28 @@
-class Solution(object):
-    def canFinish(self, numCourses, prerequisites):
-        """
-        :type numCourses: int
-        :type prerequisites: List[List[int]]
-        :rtype: bool
-        """
-        x = [0] * numCourses
-        y = [[] for i in range(numCourses)]
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        n = numCourses
+        d = [0] * n
+        edge = [[] for i in range(n)]
+        for a, b in prerequisites:
+            d[a] += 1
+            edge[b].append(a)
         
-        for e in prerequisites:
-            a, b = e
-            if a == b or a < 0 or a >= numCourses or b < 0 or b >= numCourses:
-                return False
-            x[a] += 1
-            y[b].append(a)
+        course = 0
+        tp = []
+        for i in range(n):
+            if d[i] == 0:
+                tp.append(i)
         
-        q = []
-        for i, k in enumerate(x):
-            if k == 0:
-                q.append(i)
+        while len(tp) > 0:
+            course += 1
+            x = tp.pop()
+            for e in edge[x]:
+                d[e] -= 1
+                if d[e] == 0:
+                    tp.append(e)
         
-        #print x
-        #print y
-        cnt = 0
-        while len(q) > 0:
-            c = q.pop()
-            #print c, y[c]
-            cnt += 1
-            for i in y[c]:
-                x[i] -= 1
-                if x[i] == 0:
-                    q.append(i)
+        return course == n
+            
+
+
         
-        return cnt == numCourses
