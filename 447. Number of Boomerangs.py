@@ -1,24 +1,15 @@
-class Solution(object):
-    def numberOfBoomerangs(self, points):
-        """
-        :type points: List[List[int]]
-        :rtype: int
-        """
-        def dis(x, y):
-            return (x[0]-y[0])*(x[0]-y[0]) + (x[1]-y[1])*(x[1]-y[1])
-        ret = 0
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
         n = len(points)
+        d = [{} for i in range(n)]
         for i in range(n):
-            tmp = [-1]
-            for j in range(n):
-                if i==j:continue
-                tmp.append(dis(points[i], points[j]))
-            tmp.sort()
-            l,r=0,0
-            while l < n:
-                while r <n and tmp[l]==tmp[r]: r+=1
-                m=r-l
-                ret += m*(m-1)
-                l=r
-            
+            for j in range(i+1, n):
+                x =  (points[i][0] - points[j][0])**2 + (points[i][1] - points[j][1])**2
+                d[i][x] = d[i].get(x, 0) + 1
+                d[j][x] = d[j].get(x, 0) + 1
+        
+        ret = 0
+        for i in range(n):
+            for x in d[i].values():
+                ret += x * (x - 1)
         return ret
