@@ -1,21 +1,12 @@
-class Solution(object):
-    def candy(self, ratings):
-        """
-        :type ratings: List[int]
-        :rtype: int
-        """
+class Solution:
+    def candy(self, ratings: List[int]) -> int:
         n = len(ratings)
-        l, r = [1] * n, [1] * n
-        for i in range(n - 1):
-            a, b = i + 1, n - i - 2
-            if ratings[a] > ratings[a - 1]:
-                l[a] = l[a - 1] + 1
-            if ratings[b] > ratings[b + 1]:
-                r[b] = r[b + 1] + 1
-        x = [max(l[i], r[i]) for i in range(n)]
-        #print l
-        #print r
-        #print x
-        ret = sum(x)
-        return ret
-        
+        candy = [1] * n
+        rank = list(range(n))
+        rank.sort(key=lambda x: ratings[x])
+        for i in rank:
+            if i > 0 and ratings[i] > ratings[i-1]:
+                candy[i] = max(candy[i], candy[i-1] + 1)
+            if i < n - 1 and ratings[i] > ratings[i+1]:
+                candy[i] = max(candy[i], candy[i+1] + 1)
+        return sum(candy)
