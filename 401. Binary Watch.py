@@ -1,27 +1,19 @@
-class Solution(object):
-    def readBinaryWatch(self, num):
-        """
-        :type num: int
-        :rtype: List[str]
-        """
-        if num < 0 or num > 10:
-            return []
+class Solution:
+    def readBinaryWatch(self, turnedOn: int) -> List[str]:
         ret = []
-        d = [[] for i in range(11)]
-        for i in range(60):
-            cnt = 0
-            x = i
-            while i > 0:
-                cnt += 1
-                i = i & (i - 1)
-            d[cnt].append(x)
-        for i in range(num + 1):
-            a, b = i, num - i
-            if a <= 4 and b <= 6:
-                for h in d[a]:
-                    for m in d[b]:
-                        if h < 12 and m < 60:
-                            s = '%d:%02d' %(h, m)
-                            ret.append(s)
+        def bitCount(h, m):
+            count = 0
+            while h>0:
+                count+=1
+                h -= -h&h
+            while m > 0:
+                count+=1
+                m -= -m&m
+            return count
+
+        for h in range(12):
+            for m in range(60):
+                if bitCount(h, m) == turnedOn:
+                    ret.append("{h}:{m:02d}".format(h=h,m=m))
         
         return ret
