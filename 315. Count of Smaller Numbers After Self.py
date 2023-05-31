@@ -1,47 +1,27 @@
-class Solution(object):
-    def countSmaller(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[int]
-        """
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        minNum, maxNum = min(nums), max(nums)
+        delta = 0
+        if minNum <= 0:
+            delta = abs(minNum) + 1
+        m = maxNum + delta
         n = len(nums)
-        if n == 0:
-            return []
-        nums_sorted = sorted(nums)
-        bt = [0] * (n + 1)
-        ret = []
+        for i in range(n):
+            nums[i] += delta
         
-        def get_index(num):
-            l, r = 0, n - 1
-            while l < r:
-                m = (l + r) / 2
-                if nums_sorted[m] < num:
-                    l = m + 1
-                else:
-                    r = m
-            return l + 1
-        
-        def add(x):
-            while x <= n:
-                bt[x] += 1
-                x += -x&x
-        
-        def sumx(x):
-            s = 0
-            while x > 0:
-                s += bt[x]
-                x -= -x&x
-            return s
-                    
-        for i in nums[::-1]:
-            x = get_index(i)
-            print x,
-            ret.append(sumx(x - 1))
-            add(x)
-        
-        print bt
-        ret.reverse()
-        return ret
-        
-        
+        c = [0] * (m + 1)
+        counts = [0] * n
+        for i in range(n-1, -1, -1):
+            num = nums[i]
+            while num <= m:
+                c[num] += 1
+                num += -num&num
             
+            num = nums[i]-1
+            count = 0
+            while num > 0:
+                count += c[num]
+                num -= -num&num
+            counts[i] = count
+        
+        return counts
