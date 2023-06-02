@@ -22,14 +22,8 @@ func maxPathSum(root *TreeNode) int {
 			return math.MinInt32
 		}
 
-		left, right := node.Val, node.Val
-
-		if node.Left != nil {
-			left = max(left, node.Val+dfs(node.Left))
-		}
-		if node.Right != nil {
-			right = max(right, node.Val+dfs(node.Right))
-		}
+		left := max(node.Val, node.Val+dfs(node.Left))
+		right := max(node.Val, node.Val+dfs(node.Right))
 
 		ret = max(ret, left+right-node.Val)
 		return max(left, right)
