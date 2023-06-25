@@ -4,8 +4,15 @@ class Solution:
         res = set()
         maxl = [-1]
 
+        rp = [0] * (n + 1)
+        for i in range(n-1, -1, -1):
+            if s[i] == ')':
+                rp[i] = rp[i+1] + 1
+            else:
+                rp[i] = rp[i+1]
+
         def dfs(t, i, l, r):
-            if l < r:
+            if l < r or l-r > rp[i]:
                 return
             
             if len(t)+n-i < maxl[0]:
