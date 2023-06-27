@@ -1,29 +1,34 @@
 """
 # Definition for a Node.
-class Node(object):
+class Node:
     def __init__(self, val, prev, next, child):
         self.val = val
         self.prev = prev
         self.next = next
         self.child = child
 """
-class Solution(object):
-    def flatten(self, head):
-        """
-        :type head: Node
-        :rtype: Node
-        """
-        def visit(arr, h):
-            while h:
-                arr.append(Node(h.val, None, None, None))
-                if len(arr) > 1:
-                    arr[-2].next = arr[-1]
-                    arr[-1].prev = arr[-2]
-                if h.child:
-                    visit(arr, h.child)
-                h = h.next
+
+class Solution:
+    def flatten(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        def flat(node):
+            if not node:
+                return None, None
+            
+            tail = node
+            while True:
+                if tail.child:
+                    child, childt = flat(tail.child)
+                    if tail.next:
+                        childt.next, tail.next.prev = tail.next, childt
+                    tail.next, child.prev = child, tail
+                    tail.child = None
+                    tail = childt
+                if tail.next:
+                    tail = tail.next
+                else:
+                    break
+
+            return node, tail
         
-        arr = []
-        visit(arr, head)
-        if head:
-            return arr[0]
+        h, t = flat(head)
+        return h
