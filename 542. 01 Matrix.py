@@ -1,51 +1,31 @@
-class Solution(object):
-    def updateMatrix(self, matrix):
-        """
-        :type matrix: List[List[int]]
-        :rtype: List[List[int]]
-        """
-        m, n = len(matrix), len(matrix[0])
-        ret = [[-1 for j in range(n)] for i in range(m)]
-        def dis(sx, sy, x, y):
-            return abs(sx-x) + abs(sy-y)
-        
-        self.f, self.r, self.ql = 0, 0, m*n*4
-        qlist = range(self.ql)
-        def pushq(e):
-            qlist[self.r] = e
-            self.r = (self.r+1)%self.ql
-        
-        def popq():
-            x=qlist[self.f]
-            self.f =(self.f+1)%self.ql
-            return x
-        
-        def qempty():
-            return self.f == self.r
-        
-        def update():
-            while not qempty():
-                sx, sy, x, y = popq()
-                d = abs(sx-x)+abs(sy-y)
-                #print self.f, self.r
-                if ret[x][y] == -1 or d < ret[x][y]:
-                    ret[x][y] = d
-                    if x>0:pushq((sx, sy, x-1, y))
-                    if x+1<m:pushq((sx, sy, x+1, y))
-                    if y>0:pushq((sx, sy, x, y-1))
-                    if y+1<n:pushq((sx, sy, x, y+1))
-
+class Solution:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        m, n = len(mat), len(mat[0])
+        visited = [[False] * n for _ in range(m)]
+        res = [[0] * n for _ in range(m)]
+        moves = ((1, 0), (-1, 0), (0, 1), (0, -1))
+        q = []
         for i in range(m):
             for j in range(n):
-                if matrix[i][j] == 0:
-                    #print i, j
-                    pushq((i, j, i, j))
-        update()
-        #print self.f, self.r
-        #print qlist[self.f]
-        return ret
-
-
-
-#S = Solution()
-#print S.updateMatrix([[0,0,0],[0,1,0],[0,0,0]])
+                if mat[i][j] == 1:
+                    res[i][j] = -1
+                else:
+                    visited[i][j] = True
+                    q.append((i,j))
+        
+        k = 0
+        while len(q) > 0:
+            q2 = []
+            for x, y in q:
+                if mat[x][y] == 1:
+                    res[x][y] = k
+                for dx, dy in moves:
+                    x2, y2 = x+dx, y+dy
+                    if x2<0 or x2>=m or y2<0 or y2>=n or visited[x2][y2]:
+                        continue
+                    visited[x2][y2] = True
+                    q2.append((x2, y2))
+            k += 1
+            q = q2
+        
+        return res
