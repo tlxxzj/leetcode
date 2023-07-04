@@ -1,19 +1,28 @@
-import re
 class Solution:
-    def validIPAddress(self, IP: str) -> str:
-        ip = IP
-        if ip.count('.') == 3:
-            numbers = ip.split('.')
-            for num in numbers:
-                if (not num.isdigit()) or \
-                    int(num) > 255 or \
-                    num != str(int(num)):
-                    return 'Neither'
-            return 'IPv4'
-        elif ip.count(':') == 7:
-            numbers = ip.split(':')
-            for num in numbers:
-                if not re.match('^(([0-9a-f]{1,4})|0)$', num, re.IGNORECASE):
-                    return 'Neither'
-            return 'IPv6'
-        return 'Neither'
+    def validIPAddress(self, queryIP: str) -> str:
+        import re
+        
+        def isV4():
+            v4 = r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$"
+            if not re.match(v4, queryIP):
+                return False
+            
+            groups = queryIP.split(".")
+            
+            for group in groups:
+                if group[0] == "0" and len(group) > 1:
+                    return False
+                if int(group) > 255:
+                    return False
+            return True
+            
+        
+        def isV6():
+            v6 = r"^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$"
+            return re.match(v6, queryIP) != None
+        
+        if isV4():
+            return "IPv4"
+        elif isV6():
+            return "IPv6"
+        return "Neither"
