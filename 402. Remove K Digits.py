@@ -1,19 +1,16 @@
 class Solution:
     def removeKdigits(self, num: str, k: int) -> str:
-        n = len(num)
-        if k >= n or k >= n - num.count('0'):
-            return '0'
-        ret = []
-        for i in range(n):
-            if num[i] == '0' and k >= len(ret):
-                k -= len(ret)
-                ret = []
-                continue
-            while k > 0 and len(ret) > 0 and num[i] < ret[-1]:
+        q = []
+        for digit in num:
+            while k > 0 and len(q) > 0 and int(digit) < int(q[-1]):
+                q.pop()
                 k -= 1
-                ret.pop()
-            ret.append(num[i])
-        ret = ''.join(ret)
-        if k > 0:
-            ret = ret[:-k]
-        return ret
+            q.append(digit)
+        
+        l, r = 0, len(q) - k
+        while l < len(q) and q[l] == "0":
+            l+=1
+    
+        if l >= r:
+            return "0"
+        return "".join(q[l:r])
