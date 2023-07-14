@@ -8,9 +8,6 @@ class Solution:
             for j in range(i):
                 diff = nums[i] - nums[j]
                 x = dp[j][diff]
-                if x == 0:
-                    dp[i][diff] += 1
-                else:
-                    dp[i][diff] += x + 1
-                    res += x
+                dp[i][diff] += x + 1
+                res += x
         return res
