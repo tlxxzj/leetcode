@@ -1,22 +1,14 @@
-class Solution(object):
-    def findErrorNums(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[int]
-        """
-        n = len(nums)
-        i = 0
-        ret=[0,0]
-        while i < n:
-            if i+1 == nums[i]:
-                i+=1
-                continue
-            x=nums[i]
-            if nums[x-1] == x:
-                ret[0] = x
-                ret[1] = i+1
-                i+=1
-                continue
+class Solution:
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        res = [0, 0]
+        d = set()
+        for num in nums:
+            if num in d:
+                res[0] = num
             else:
-                nums[i], nums[x-1] = nums[x-1], nums[i]
-        return ret
+                d.add(num)
+        
+        for i in range(1, len(nums)+1):
+            if i not in d:
+                res[1] = i
+                return res
