@@ -1,23 +1,13 @@
-class Solution(object):
-    def matrixReshape(self, nums, r, c):
-        """
-        :type nums: List[List[int]]
-        :type r: int
-        :type c: int
-        :rtype: List[List[int]]
-        """
-        if not nums: return []
-        row, col = len(nums), len(nums[0])
-        if row * col != r * c:
-            return nums
-        ret = []
-        nums = [j for i in nums for j in i]
-        while nums:
-            ret.append(nums[:c])
-            nums = nums[c:]
-        return ret
-
+class Solution:
+    def matrixReshape(self, mat: List[List[int]], r: int, c: int) -> List[List[int]]:
+        m, n = len(mat), len(mat[0])
+        if m * n != r * c:
+            return mat
         
+        res = [[0]*c for _ in range(r)]
+        for i in range(r):
+            for j in range(c):
+                k = i*c + j
+                res[i][j] = mat[k//n][k%n]
         
-        
-        
+        return res
