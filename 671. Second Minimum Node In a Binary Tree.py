@@ -1,32 +1,22 @@
 # Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findSecondMinimumValue(self, root: Optional[TreeNode]) -> int:
+        rootval = root.val
+        res = [-1]
+        
+        def find(node):
+            if node.val > rootval and (res[0] == -1 or node.val < res[0]):
+                res[0] = node.val
+            
+            if node.val == rootval and node.left:
+                    find(node.left)
+                    find(node.right)
+        
+        find(root)
 
-class Solution(object):
-    def findSecondMinimumValue(self, root):
-        """
-        :type root: TreeNode
-        :rtype: int
-        """
-        if (not root) or (not root.left):
-            return -1
-        
-        def find(v, r):
-            if r.val > v:
-                return r.val
-            elif r.left:
-                x = find(v, r.left)
-                y = find(v, r.right)
-                if x==-1:
-                    return y
-                elif y==-1:
-                    return x
-                return min(x, y)
-            else:
-                return -1
-        
-        return find(root.val, root)
-                
+        return res[0]
