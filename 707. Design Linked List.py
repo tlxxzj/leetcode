@@ -1,106 +1,75 @@
-class ListNode:
-    def __init__(self, val):
-        self.val = val
-        self.prev = None
-        self.next = None
-
-        
 class MyLinkedList:
+    class Node:
+        def __init__(self, val=0, prev=None, next=None):
+            self.val = val
+            self.prev = prev
+            self.next = next
 
     def __init__(self):
-        """
-        Initialize your data structure here.
-        """
-        self.head = ListNode(0)
-        self.tail = ListNode(0)
+        self.length = 0
+        self.head = self.Node(0)
+        self.tail = self.Node(0)
         self.head.next = self.tail
         self.tail.prev = self.head
-        self.size = 0
-    
-    def print(self):
-        node = self.head.next
-        vals = []
-        while node != self.tail:
-            vals.append(node.val)
-            node = node.next
-        #print(vals)
-    
-    def insert(self, node, val):
-        node2 = ListNode(val)
-        node2.prev = node.prev
-        node2.next = node
-        node.prev.next = node2
-        node.prev = node2
-        self.size += 1
-        #self.print()
-    
-    
-    def remove(self, node):
-        if not node:
-            return
-        node.prev.next = node.next
-        node.next.prev = node.prev
-        self.size -= 1
-        self.print()
-    
-    
-    def get_node(self, index):
-        if index < 0 or index >= self.size:
-            return None
-        node = self.head.next
-        while index > 0:
-            index -= 1
-            node = node.next
-        return node
-        
+        #print(self.toList())
 
     def get(self, index: int) -> int:
-        """
-        Get the value of the index-th node in the linked list. If the index is invalid, return -1.
-        """
-        if index < 0 or index >= self.size:
+        if index < 0 or index >= self.length:
             return -1
-        return self.get_node(index).val
         
+        node = self.head.next
+        while index > 0:
+            node = node.next
+            index -= 1
         
+        return node.val
+            
     def addAtHead(self, val: int) -> None:
-        """
-        Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list.
-        """
-        self.insert(self.head.next, val)
-        
-        
+        self.addAtIndex(0, val)
 
     def addAtTail(self, val: int) -> None:
-        """
-        Append a node of value val to the last element of the linked list.
-        """
-        self.insert(self.tail, val)
-        
-        
+        self.addAtIndex(self.length, val)
+
     def addAtIndex(self, index: int, val: int) -> None:
-        """
-        Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted.
-        """
-        if index < 0 or index > self.size:
+        if index < 0 or index > self.length:
             return
-        if index == self.size:
-            self.insert(self.tail, val)
-            return
-        node = self.get_node(index)
-        self.insert(node, val)
         
-            
+        node = self.Node(val)
+        head = self.head
+        for i in range(index):
+            head = head.next
+        
+        node.prev = head
+        node.next = head.next
+        head.next.prev = node
+        head.next = node
+
+        self.length += 1
+        #print(self.toList())
+        
     def deleteAtIndex(self, index: int) -> None:
-        """
-        Delete the index-th node in the linked list, if the index is valid.
-        """
-        if index <0 or index >= self.size:
+        if index < 0 or index >= self.length:
             return
-        node = self.get_node(index)
-        self.remove(node)
         
+        head = self.head.next
+        for i in range(index):
+            head = head.next
         
+        prev, next = head.prev, head.next
+        prev.next = next
+        next.prev = prev
+
+        self.length -= 1
+        #print(self.toList())
+    
+    def toList(self):
+        nodes = []
+        node = self.head.next
+        for i in range(self.length):
+            nodes.append(node.val)
+            node = node.next
+        return nodes
+
 # Your MyLinkedList object will be instantiated and called as such:
 # obj = MyLinkedList()
 # param_1 = obj.get(index)
