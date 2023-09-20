@@ -1,13 +1,8 @@
-class Solution(object):
-    def maxCount(self, m, n, ops):
-        """
-        :type m: int
-        :type n: int
-        :type ops: List[List[int]]
-        :rtype: int
-        """
-        if ops:
-            return min([op[0] for op in ops]) * min([op[1] for op in ops])
-        else:
-            return m*n
+class Solution:
+    def maxCount(self, m: int, n: int, ops: List[List[int]]) -> int:
+        x, y = m, n
+        for a, b in ops:
+            x = min(x, a)
+            y = min(y, b)
         
+        return x * y
