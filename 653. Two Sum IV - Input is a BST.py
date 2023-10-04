@@ -1,27 +1,32 @@
 # Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
-class Solution(object):
-    def findTarget(self, root, k):
-        """
-        :type root: TreeNode
-        :type k: int
-        :rtype: bool
-        """
-        def treehas(node, val):
-            while node:
-                if node.val == val: return True
-                elif val < node.val: node = node.left
-                else: node = node.right
-            return False
-        
-        def find(node, val):
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
+        def iterInorder(node):
             if node:
-                return (val != node.val*2 and treehas(root, val-node.val)) or find(node.left, val) or find(node.right, val)
+                yield from iterInorder(node.left)
+                yield node
+                yield from iterInorder(node.right)
+        
+        def iterReverse(node):
+            if node:
+                yield from iterReverse(node.right)
+                yield node
+                yield from iterReverse(node.left)
+        
+        left, right = iterInorder(root), iterReverse(root)
+        a, b = next(left), next(right)
+        if a.val * 2 > k or b.val * 2 < k:
             return False
-        return find(root, k)
-                
+        while a != b:
+            if a.val + b.val < k:
+                a = next(left)
+            elif a.val + b.val > k:
+                b = next(right)
+            else:
+                return True
+        return False
