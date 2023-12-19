@@ -1,42 +1,30 @@
-class Solution(object):
-    def solve(self, board):
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
         """
-        :type board: List[List[str]]
-        :rtype: void Do not return anything, modify board in-place instead.
+        Do not return anything, modify board in-place instead.
         """
-        m = len(board)
-        if m == 0:
-            return
-        n = len(board[0])
-        if n == 0:
-            return
-        visited = [[False for j in range(n)] for i in range(m)]
-        q = []
+        m, n = len(board), len(board[0])
+        def dfs(x, y):
+            if x<0 or x>=m or y<0 or y>=n:
+                return
+            if board[x][y] != 'O':
+                return
+            board[x][y] = '.'
+            dfs(x-1, y)
+            dfs(x+1, y)
+            dfs(x, y-1)
+            dfs(x, y+1)
+            
         for i in range(m):
-            if board[i][0] == 'O':
-                q.append((i, 0))
-            if board[i][n-1] == 'O':
-                q.append((i, n-1))
-        for j in range(n):
-            if board[0][j] == 'O':
-                q.append((0, j))
-            if board[m-1][j] == 'O':
-                q.append((m-1, j))
-        while len(q) > 0:
-            x,y=q.pop()
-            if visited[x][y]:
-                continue
-            visited[x][y] = True
-            for i, j in [[0, 1],[1, 0],[0, -1],[-1, 0]]:
-                x2 = x+i
-                y2 = y+j
-                if (0 <= x2 < m) and (0<= y2 < n) and (board[x2][y2] == 'O') and (not visited[x2][y2]):
-                    q.append((x2, y2)) 
-
-        for i, row in enumerate(board):
-            for j, col in enumerate(row):
-                if board[i][j] == 'O' and (not visited[i][j]):
+            dfs(i, 0)
+            dfs(i, n-1)
+        for i in range(n):
+            dfs(0, i)
+            dfs(m-1, i)
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == '.':
+                    board[i][j] = 'O'
+                elif board[i][j] == 'O':
                     board[i][j] = 'X'
-        #return board
-
-
+        
