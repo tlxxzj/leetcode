@@ -1,34 +1,25 @@
-class Solution(object):
-    def findRepeatedDnaSequences(self, s):
-        """
-        :type s: str
-        :rtype: List[str]
-        """
-        b = 31
-        B = 1
-        for i in range(10):
-            B *= b
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        n = len(s)
+        seqs = defaultdict(int)
+        res = []
         h = 0
-        for c in s[:10]:
-            h = h * b + ord(c)
-        d = {
-            h: [9]
-        }
-        ret = set()
-        for i, c in enumerate(s[10:], 10):
-            h = h * b + ord(c) - ord(s[i-10]) * B
-            x = h
-            #print x
-            if x in d:
-                f = False
-                for y in d[x]:
-                    if s[y - 9: y + 1] == s[i - 9: i + 1]:
-                        f = True
-                        ret.add(y)
-                        break
-                if not f:
-                    d[x].append(i)
+        for i in range(n):
+            c = 0
+            if s[i] == 'A':
+                c = 0
+            elif s[i] == 'C':
+                c = 1
+            elif s[i] == 'G':
+                c = 2
             else:
-                d[x] = [i]
-        return [s[i - 9: i + 1] for i in ret]
-        
+                c = 3
+            h = h << 2
+            h = h & ((1<<20)-1)
+            h = h | c
+            if i<9:
+                continue
+            seqs[h] += 1
+            if seqs[h] == 2:
+                res.append(s[i-9:i+1])
+        return res
