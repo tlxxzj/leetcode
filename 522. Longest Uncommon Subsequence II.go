@@ -5,11 +5,8 @@ func findLUSlength(strs []string) int {
 	})
 
 	isSub := func(a, b string) bool {
-		if len(a) > len(b) {
-			return false
-		}
 		i, j := 0, 0
-		for i < len(a) && j < len(b) {
+		for i < len(a) && j < len(b) && len(a)-i <= len(b)-j {
 			if a[i] == b[j] {
 				i++
 			}
