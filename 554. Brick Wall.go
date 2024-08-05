@@ -4,54 +4,21 @@ func leastBricks(wall [][]int) int {
 		return 0
 	}
 
-	nums := []int{0}
-	for i := 0; i < row; i++ {
+	bricks := make(map[int]int)
+	for _, row := range wall {
 		sum := 0
-		col := len(wall[i])
-		for j := 0; j < col; j++ {
-			sum += wall[i][j]
-			nums = append(nums, sum)
-		}
-	}
-
-	slices.Sort(nums)
-	//fmt.Println(nums)
-
-	m := make(map[int]int)
-	m[0] = 0
-	prevNum := 0
-	maxM := 0
-	for i, num := range nums {
-		if i == 0 {
-			continue
-		}
-		if num == nums[i-1] {
-			continue
-		}
-
-		if num-prevNum == 1 {
-			m[num] = m[prevNum] + 2
-		} else {
-			m[num] = m[prevNum] + 2
-		}
-		prevNum = num
-		maxM = m[num]
-	}
-	//fmt.Println(m)
-
-	bricks := make([]int, maxM)
-	for i := 0; i < row; i++ {
-		sum := 0
-		col := len(wall[i])
-		for j := 0; j < col; j++ {
-			//start := m[sum]
-			sum += wall[i][j]
-			end := m[sum]
-			if end < maxM {
-				bricks[end]++
+		for i, num := range row {
+			if i != len(row)-1 {
+				sum += num
+				bricks[sum]++
 			}
 		}
 	}
-	//fmt.Println(bricks)
-	return row - slices.Max(bricks)
+	maxCount := 0
+	for _, count := range bricks {
+		if count > maxCount {
+			maxCount = count
+		}
+	}
+	return row - maxCount
 }
